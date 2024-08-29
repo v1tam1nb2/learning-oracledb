@@ -1,0 +1,18 @@
+services:
+  oracle:
+    image: container-registry.oracle.com/database/express:21.3.0-xe
+    container_name: oracle
+    hostname: oracle
+    tty: true
+    restart: always
+    ports:
+      - "1521:1521"
+    volumes:
+      - ./data:/data
+      - ./oracle/oradata:/opt/oracle/oradata # データ永続化
+      - ./oracle/scripts/startup:/opt/oracle/scripts/startup # DB起動後に実行されるスクリプト
+      - ./oracle/scripts/setup:/opt/oracle/scripts/setup # DBセットアップ後に実行されるスクリプト
+      #- ./oracle/cfgtoollogs:/opt/oracle/cfgtoollogs
+    environment:
+      - ORACLE_PWD=OraclePassw0rd # SYS, SYSTEM and PDB_ADMIN password
+      - ORACLE_CHARACTERSET=AL32UTF8 # 文字コード
